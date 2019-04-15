@@ -5,6 +5,8 @@
 
 Qiitaの記事を書くときに自動でlintにかけて添削をする。
 
+image:https://travis-ci.org/jiro4989/qiita_page.svg?branch=master["Build Status", link="https://travis-ci.org/jiro4989/qiita_page"]
+
 == 前提条件
 
 * docker
