@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  textlint:
+    build: ./textlint
+    container_name: textlint
+    tty: true
+    working_dir: /root
+    volumes:
+      - ".:/root"
+    command: textlint --preset ja-technical-writing page/*.md
