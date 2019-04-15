@@ -1,11 +1,5 @@
 {
   "rules": {
     "preset-ja-technical-writing": true
-  },
-  "sentence-length": {
-    "max": 100
-  },
-  "max-ten": {
-      "max": 3
   }
 }
