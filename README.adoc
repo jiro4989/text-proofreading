@@ -1,0 +1,24 @@
+:toc: left
+:sectnums:
+
+= qiita_page
+
+Qiitaの記事を書くときに自動でlintにかけて添削をする。
+
+== 前提条件
+
+* docker
+* docker-compose
+
+== 使い方
+
+以下のコマンドを実行する。
+正常終了すれば添削はOK。
+
+[source,bash]
+docker-compose build
+docker-compose up
+
+== 参考
+
+* https://github.com/textlint-ja/textlint-rule-preset-ja-technical-writing[textlintの日本語技術文書向けルール]
