@@ -6,6 +6,7 @@
   "filters": {
     "whitelist": {
       "allow": [
+        "思う",
         "思います",
         "かも",
       ]
