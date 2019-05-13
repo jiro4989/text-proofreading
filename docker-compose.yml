@@ -8,7 +8,7 @@ services:
     working_dir: /root
     volumes:
       - "./qiita:/root"
-    command: textlint --preset ja-technical-writing *.md
+    command: textlint --preset ja-technical-writing .
 
   blog:
     build: ./textlint
@@ -17,4 +17,4 @@ services:
     working_dir: /root
     volumes:
       - "./blog:/root"
-    command: textlint --preset ja-technical-writing *.md
+    command: textlint --preset ja-technical-writing .

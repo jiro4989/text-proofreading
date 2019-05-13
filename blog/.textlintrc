@@ -1,5 +1,14 @@
 {
   "rules": {
-    "preset-ja-technical-writing": true
+    "preset-ja-technical-writing": true,
+    "ja-no-weak-phrase": false
+  },
+  "filters": {
+    "whitelist": {
+      "allow": [
+        "思います",
+        "かも",
+      ]
+    }
   }
 }
