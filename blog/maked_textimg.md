@@ -6,7 +6,7 @@ Terminal上の色のついたテキストを画像に再現するtextimgとい�
 
 リポジトリは下記。
 
-https://github.com/jiro4989/textimg
+[https://github.com/jiro4989/textimg:embed:cite]
 
 [:contents]
 
@@ -31,7 +31,7 @@ Linux環境でテキストに色をつけるにはエスケープシーケンス
 textimg $'\x1b[31mRED\x1b[0m' -o out.png
 ```
 
-TODOここに画像。
+<figure class="figure-image figure-image-fotolife" title="red">[f:id:jiroron666:20190515160808p:plain]<figcaption>red</figcaption></figure>
 
 より複雑な使用例は下記のとおりです。
 
@@ -44,12 +44,11 @@ seq 0 255 | while read -r i; do
 done | textimg -o 256_bg.png
 ```
 
-TODOここに画像。
-
+<figure class="figure-image figure-image-fotolife" title="bgall">[f:id:jiroron666:20190515160917p:plain]<figcaption>bgall</figcaption></figure>
 アニメーションGIFにも対応しています。
 シェル芸bot環境での使用例は以下です。
 
-https://twitter.com/minyoruminyon/status/1128270441087262720
+[https://twitter.com/minyoruminyon/status/1128270441087262720:embed]
 
 使用しているコマンドのオプションの説明は以下のとおりです。
 
