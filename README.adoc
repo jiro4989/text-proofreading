@@ -21,6 +21,17 @@ image:https://travis-ci.org/jiro4989/text-proofreading.svg?branch=master["Build 
 docker-compose build
 docker-compose up
 
+端末を別で起動して添削をループで回すのもあり。
+以下専用スクリプトを使う例。
+
+[source,bash]
+----
+./lint.sh start
+
+# 停止する場合は別端末から
+./lint.sh stop
+----
+
 == 参考
 
 * https://github.com/textlint-ja/textlint-rule-preset-ja-technical-writing[textlintの日本語技術文書向けルール]
