@@ -1,11 +1,11 @@
 :toc: left
 :sectnums:
 
-= qiita_page
+= text-proofreading
 
-Qiitaの記事を書くときに自動でlintにかけて添削をする。
+Qiitaやブログの記事を書くときに自動でlintにかけて添削をする。
 
-image:https://travis-ci.org/jiro4989/qiita_page.svg?branch=master["Build Status", link="https://travis-ci.org/jiro4989/qiita_page"]
+image:https://travis-ci.org/jiro4989/text-proofreading.svg?branch=master["Build Status", link="https://travis-ci.org/jiro4989/text-proofreading"]
 
 == 前提条件
 
