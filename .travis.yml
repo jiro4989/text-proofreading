@@ -1,10 +1,7 @@
-language: node_js
-node_js:
-- '9'
-
+sudo: required
+services:
+  - docker
 before_install:
-  - npm i -g textlint textlint-rule-preset-ja-technical-writing g textlint-filter-rule-whitelist
-
+  - docker-compose build
 script:
-  - (cd qiita && textlint --preset ja-technical-writing .)
-  - (cd blog && textlint --preset ja-technical-writing .)
+  - docker-compose up

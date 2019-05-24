@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  qiita:
+    build: ./textlint
+    container_name: textlinter_qiita
+    tty: true
+    working_dir: /root
+    volumes:
+      - "./qiita:/root"
+    command: textlint --preset ja-technical-writing .
+
+  blog:
+    build: ./textlint
+    container_name: textlinter_blog
+    tty: true
+    working_dir: /root
+    volumes:
+      - "./blog:/root"
+    command: textlint --preset ja-technical-writing .
