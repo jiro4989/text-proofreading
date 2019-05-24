@@ -7,30 +7,12 @@ Qiitaやブログの記事を書くときに自動でlintにかけて添削を�
 
 image:https://travis-ci.org/jiro4989/text-proofreading.svg?branch=master["Build Status", link="https://travis-ci.org/jiro4989/text-proofreading"]
 
-== 前提条件
-
-* docker
-* docker-compose
-
 == 使い方
 
-以下のコマンドを実行する。
-正常終了すれば添削はOK。
+Markdownでテキストを書いてPushしたら自動でTravisCiがtextlintしてくれる。
+特にローカルに環境を整える必要はない。
 
-[source,bash]
-docker-compose build
-docker-compose up
-
-端末を別で起動して添削をループで回すのもあり。
-以下専用スクリプトを使う例。
-
-[source,bash]
-----
-./lint.sh start
-
-# 停止する場合は別端末から
-./lint.sh stop
-----
+こまめにpushしたほうが早い段階で気付けるのでオススメ。
 
 == 参考
 
