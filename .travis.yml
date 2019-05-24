@@ -2,10 +2,6 @@ language: node_js
 node_js:
 - '9'
 
-cache:
-  directories:
-    - node_modules
-
 before_install:
   - npm i -g textlint textlint-rule-preset-ja-technical-writing g textlint-filter-rule-whitelist
 
