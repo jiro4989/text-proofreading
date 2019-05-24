@@ -32,6 +32,9 @@ docker-compose up
 ./lint.sh stop
 ----
 
+なおTravisCIでもtextlintするようにしているため
+手元に環境がなくてもlintにかけることは可能。
+
 == 参考
 
 * https://github.com/textlint-ja/textlint-rule-preset-ja-technical-writing[textlintの日本語技術文書向けルール]
