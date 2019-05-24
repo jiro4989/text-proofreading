@@ -12,12 +12,13 @@ NimでEastAsianWidthを扱うためのライブラリを作りました。
 文字幅についてのヒントのことです。
 
 いわゆる半角文字は半角1文字分、全角文字は半角2文字分の幅になるということを定義化したものです。
+その他にも文字の分類について定義しています。
 
 # なぜ作ったのか
 
 CLIツールを作る上で全角文字の幅を考慮した実装の必要があったためです。
-Goだと[go-runewidth](https://github.com/mattn/go-runewidth)がそれに該当するのですが
-これに相当するものがNimにはありませんでした。
+Goだとサードパーティのライブラリで[go-runewidth](https://github.com/mattn/go-runewidth)がそれを実現できるのですが
+Nimにはこれに相当するものがありませんでした。
 
 なので、Node.js用のライブラリ[eastasianwidth](https://github.com/komagata/eastasianwidth)を参考に
 Nimにも実装してみた次第です。
@@ -77,9 +78,9 @@ for text in texts:
   echo "| " & text & pad & " |"
 ```
 
-このコードをじっこうしたときの結果は以下のとおりです。
+このコードを実行したときの結果は以下のとおりです。
 
-TODO
+<figure class="figure-image figure-image-fotolife" title="実行結果">[f:id:jiroron666:20190525065525p:plain]<figcaption>実行結果</figcaption></figure>
 
 ## 絵文字の例
 
@@ -88,7 +89,7 @@ EastAsianWidthでは絵文字はNeutralに属しており、1文字分として�
 
 しかしながら、ほとんどのソフトは絵文字を2文字分として扱っています。
 なので、絵文字はNeutralであるけれど、文字幅としては2文字を返すようにする必要がありました。
-まぁ絵文字コード範囲だけ特別扱いするようにして、2文字幅を返すように実装しました。
+絵文字コード範囲だけ特別扱いするようにして、2文字幅を返すように実装しました。
 
 以下に文字幅のテストコードを転記します。
 
@@ -117,6 +118,10 @@ requires "eastasianwidth >= 1.1.0"
 ```
 
 使い方は前述の問題になる例を参考にしてください。
+
+また、[rect](https://github.com/jiro4989/rect)というツールで
+実際に僕は今回作成したeastasianwidthライブラリを使用しています。
+このrectについてはいずれ記事にしようと思います。
 
 # まとめ
 
