@@ -3,7 +3,7 @@
 
 = text-proofreading
 
-Qiitaやブログの記事を書くときに自動でtextlintにかけて添削をする。
+Qiitaやブログの記事を書くときに自動でlintにかけて添削をする。
 
 image:https://travis-ci.org/jiro4989/text-proofreading.svg?branch=master["Build Status", link="https://travis-ci.org/jiro4989/text-proofreading"]
 
