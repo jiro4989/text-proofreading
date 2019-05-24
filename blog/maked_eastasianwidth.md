@@ -4,7 +4,7 @@ NimでEastAsianWidthを扱うためのライブラリを作った
 NimでEastAsianWidthを扱うためのライブラリを作りました。
 なぜ作ったのか、と何ができるのか、について記載します。
 
-[:contents:]
+[:contents]
 
 # EastAsianWidthとは
 
