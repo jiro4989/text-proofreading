@@ -14,92 +14,6 @@ nim 0.19.6
 
 なぜ0.19かというと`choosenim`で0.20.0にしたらnimは動きましたが、nimbleが動かなかったからです・・・。
 
-# テストを書くためのTIPS
-
-Nimでテストコードを書く前に
-テストコードを書くときに意識しておくべき要点をいくつか。
-
-## quitを使わない
-
-不正なデータを受け取ったときに後続の処理をスキップするために`quit`を使う場合があると思います。
-しかしながら、テストさせたいプロシージャ内で`quit`を使ってはいけないです。
-`quit`が実行されたあとに控えているテストがすべて実行されなくなるからです。
-
-```src/project.nim
-proc add*(x, y: int): int =
-  if x < 0:
-    quit 1
-  return x + y
-```
-
-```tests/test1.nim
-import unittest
-
-import project
-suite "add":
-  test "1 + 1 == 2":
-    check add(1, 1) == 2
-  test "0 + 1 == 1":
-    check add(0, 1) == 1
-  test "-1 + 1 == 0":
-    check add(-1, 1) == 0
-  test "0 + 0 == 0":
-    check add(0, 0) == 0
-```
-
-```bash
-% nimble test
-  Executing task test in /tmp/project/project.nimble
-  Verifying dependencies for project@0.1.0
-  Compiling /tmp/project/tests/test1.nim (from package project) using c backend
-
-[Suite] add
-  [OK] 1 + 1 == 2
-  [OK] 0 + 1 == 1
-Error: execution of an external program failed: '/tmp/project/tests/test1 '
-       Tip: 4 messages have been suppressed, use --verbose to show them.
-     Error: Execution failed with exit code 1
-        ... Command: "/home/jiro4989/.nimble/bin/nim" c --noNimblePath "-r" "--path:."  "/tmp/project/tests/test1.nim"
-```
-
-すべてのテストケースを網羅したい場合は、`quit`で抜けるのではなく
-例外を返すなどして`isMainModule`のブロック内でのみ`quit`を使うように実装するべきだと考えます。
-これは他の言語でも同様のことが言えると思います。
-
-## 参照型のテスト
-
-Nimでは嬉しいことに配列やシーケンス、構造体の値比較が`==`で行えます。
-参照型の値比較は`==`では行えないのですが、これも容易に回避する方法があります。
-`[]`というプロシージャを使用することで参照型の値の取得が可能です。
-これを利用して参照型の値比較も容易に行えます。
-
-https://nim-lang.org/docs/tut1.html#advanced-types-reference-and-pointer-types
-
-> 空の[]添え字表記は、参照を延期するために使用できます。つまり、参照が指す項目を取得するという意味です。
-
-```nim
-type
-  Obj = object
-    n: int
-  RefObj = ref object
-    n: int
-
-echo "Obj:      ", Obj(n: 1) == Obj(n: 1)
-echo "RefObj:   ", RefObj(n: 1) == RefObj(n: 1)
-echo "RefObj[]: ", RefObj(n: 1)[] == RefObj(n: 1)[]
-echo "Array:    ", [1, 2, 3] == [1, 2, 3]
-echo "Seq:      ", @[1, 2, 3] == @[1, 2, 3]
-```
-
-```bash
-% nim c -r b.nim
-Obj:      true
-RefObj:   false
-RefObj[]: true
-Array:    true
-Seq:      true
-```
-
 # assert系でテストする
 
 ## assertとdoAssert
@@ -109,12 +23,10 @@ Nimでは値比較をして不正な場合は例外を返す`assert`系のプロ
 
 https://nim-lang.github.io/Nim/assertions.html#doAssertRaises.t%2Ctypedesc%2Cuntyped
 
-ではassertとdoAssertどちらを使うべきか、ですがdoAssertを使えば良いと思います。
+ではassertとdoAssertどちらを使うべきか、ですがdoAssertを使いましょう。
 
-assertとdoAssertの違いですが、assertはコンパイル時にオプションを与えることでassert呼び出しをしないようにできます。
-doAssertはオプションを与えてもコードが残り続けます。
-
-ずっとチェックしてほしいものならdoAssert、無視させたいケースが想定されるならassertという使い分けになると思います。
+assertとdoAssertの違いですが、assertはコンパイル時にオプションを与えることでassertでのチェックを無視します。
+doAssertはオプションを与えてもassertでのチェックを継続します。
 
 ```a.nim
 assert(false, "assertで失敗した")
@@ -131,13 +43,13 @@ $ nim c --assertions:off -r a.nim
 Error: unhandled exception: /tmp/a.nim(2, 9) `false` doAssertで失敗した [AssertionError]
 ```
 
-ですが、これだけでテストコードを書くのは得策ではないと思います。
+ですが、これだけでテストコードを書くのは得策ではありません。
 なぜかというとassertのみだとテストを通過してもOK/NGなどのメッセージが出力されないからです。
-他にもunittestからテストするときのことを考えるとあまり使うべきではないかなと思います（後述）。
+他にもunittestからテストするときのことを考えるとあまり使うべきではありません（後述）。
 
 # unittestでテストする
 
-多くの場合はこちらでテストすることになると思います。
+多くの場合はこちらでテストコードを書きます。
 
 ## テストをするためのプロジェクト構造
 
@@ -158,7 +70,7 @@ project/
 たとえば`tmain.nim`というファイルが存在したとき`tmain`というバイナリファイルがtestsディレクトリ配下に生成されます。
 これはgitで管理したくないので、以下のようなgitignoreを追加します。
 
-Windowsだと多分exeファイルを除外すればよいと思います。
+Windowsだと多分exeファイルを除外します。
 (WindowsPCを持っていない)
 
 ```.gitignore
@@ -186,7 +98,7 @@ include main
 
 しかしながら、`include`を使う場合も問題があります。
 `include`を使うと、読み込んだモジュールの`when isMainModule`ブロックも読み込まれてしまい、
-テスト実行時に一緒に実行されてしまうためです。
+テスト時に実行されてしまうためです。
 
 ```src/project.nim 
 proc add(x, y: int): int =
@@ -224,8 +136,9 @@ Main Module
    Success: All tests passed
 ```
 
-これは、例えば実行可能ファイルを作る目的のmain処理を書いているモジュールをテストしようとしたときに
-`when isMainModule`のブロックの途中や最後に`quit`処理を入れていた場合に、後続のテストコードが実行されなくなってしまいます。
+これは実行可能ファイルを作る目的のmain処理を書いているモジュールをテストする時問題になります。
+`when isMainModule`のブロックの途中や最後に`quit`処理を入れていた場合に、
+後続のテストコードが実行されなくなってしまいます。
 
 なので、`include`を使ってテストをする前提のモジュールで`when isMainModule`を書くときは
 テストコードから読み込まれても問題ないように実装する必要があります。
@@ -241,7 +154,7 @@ proc first(n: openArray[int]): int =
   return n[0]
 ```
 
-見ての通り、配列が空の配列だとエラーが発生するのが予想できます。
+このプロシージャでは配列が空の配列だとエラーが発生します。
 このときに、例外が返ることを`expect`を使用して以下のようにテストします。
 
 ```nim
@@ -319,3 +232,40 @@ proc sum*(n: seq[seq[int]]): int =
 when isMainModule:
   echo sum(@[@[1, 2], @[3, 4]])
 ```
+
+# テストを書くためのTIPS
+
+## 参照型のテスト
+
+Nimでは嬉しいことに配列やシーケンス、構造体の値比較が`==`で行えます。
+参照型の値比較は`==`では行えないのですが、これも容易に回避する方法があります。
+`[]`というプロシージャを使用することで参照型の値の取得が可能です。
+これを利用して参照型の値比較も容易に行えます。
+
+https://nim-lang.org/docs/tut1.html#advanced-types-reference-and-pointer-types
+
+> 空の[]添え字表記は、参照を延期するために使用できます。つまり、参照が指す項目を取得するという意味です。
+
+```nim
+type
+  Obj = object
+    n: int
+  RefObj = ref object
+    n: int
+
+echo "Obj:      ", Obj(n: 1) == Obj(n: 1)
+echo "RefObj:   ", RefObj(n: 1) == RefObj(n: 1)
+echo "RefObj[]: ", RefObj(n: 1)[] == RefObj(n: 1)[]
+echo "Array:    ", [1, 2, 3] == [1, 2, 3]
+echo "Seq:      ", @[1, 2, 3] == @[1, 2, 3]
+```
+
+```bash
+% nim c -r b.nim
+Obj:      true
+RefObj:   false
+RefObj[]: true
+Array:    true
+Seq:      true
+```
+
