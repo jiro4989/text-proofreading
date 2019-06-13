@@ -143,7 +143,59 @@ Main Module
 なので、`include`を使ってテストをする前提のモジュールで`when isMainModule`を書くときは
 テストコードから読み込まれても問題ないように実装する必要があります。
 
-## suite/test/check/expect
+## suite/testでテストの目的を表現する
+
+テストの粒度をどれくらいにするかはケースバイケースです。
+僕が一番やるのはプロシージャ単位でsuiteを使用します。
+
+```nim
+suite "プロシージャ名":
+  test "テストの目的、期待値の説明":
+    check procedure1() == expect
+```
+
+引数を書き換えるプロシージャのテストを行う場合は`setup`で変数を宣言すると便利です。
+`setup`は`test`が実行される直前に都度実行されます。
+
+```nim
+proc add1(n: var int) =
+  n.inc
+```
+
+```tests/test1.nim
+suite "add1":
+  setup:
+    echo "setup"
+    var n = 1
+  test "test1":
+    n.add1()
+    check n == 2
+  test "test2":
+    n.add1()
+    check n == 2
+  test "test3":
+    n.add1()
+    check n == 2
+```
+
+```bash
+% nimble test
+  Executing task test in /tmp/project/project.nimble
+  Verifying dependencies for project@0.1.0
+  Compiling /tmp/project/tests/test1.nim (from package project) using c backend
+CC: project_test1
+[Suite] add1
+setup
+  [OK] test1
+setup
+  [OK] test2
+setup
+  [OK] test3
+   Success: Execution finished
+   Success: All tests passed
+```
+
+## expectで例外をテストする
 
 例外が返ることをテストするときは`expect`を使います。
 
@@ -187,13 +239,13 @@ suite "first":
 Nimでドキュメンテーションコメントを書くときに
 runnableExamplesを書くと、書いたサンプルコードが実際に動作することを検証できます。
 
-これは多くの場合、プロシージャごとにドキュメンテーションコメントを書く際に使用されていますが、
+これは標準ライブラリでは、プロシージャごとのドキュメンテーションコメントを書く際に使用されていますが、
 これはモジュールのトップレベルのドキュメントを書く際にも使用できます。
 
 しかしながら、runnableExamplesで生成されるドキュメントからは
 空白行やインデント、コメントが削除されてしまうので、
 みやすさを確保したドキュメントを整備したいときには使用できません。
-コメントを一緒に描画したい場合は`##`でコメントを書かないと消されてしまいます。
+また、コメントを一緒に描画したい場合は`##`でコメントを書かないと消されてしまいます。
 
 ```nim
 ## project はNimのドキュメント生成の練習用のモジュールです。
@@ -233,6 +285,13 @@ when isMainModule:
   echo sum(@[@[1, 2], @[3, 4]])
 ```
 
+このコードから`nim doc`で以下のドキュメントが生成されます。
+
+TODO
+
+runnableExamplesで、コンパイルして実行して正常終了しないコードが存在した場合は
+`nim doc`のときに異常終了します。
+
 # テストを書くためのTIPS
 
 ## 参照型のテスト
@@ -244,7 +303,10 @@ Nimでは嬉しいことに配列やシーケンス、構造体の値比較が`=
 
 https://nim-lang.org/docs/tut1.html#advanced-types-reference-and-pointer-types
 
-> 空の[]添え字表記は、参照を延期するために使用できます。つまり、参照が指す項目を取得するという意味です。
+一部を抜粋して和訳。
+
+> 空の[]添え字表記は、参照を延期するために使用できます。つまり、参照が指す項目
+> を取得するという意味です。
 
 ```nim
 type
@@ -269,3 +331,7 @@ Array:    true
 Seq:      true
 ```
 
+# まとめ
+
+自分でライブラリを書いたり、[Nimの標準ライブラリのドキュメント整備](https://github.com/nim-lang/Nim/issues/10330)に関わったりした際に
+色々ハマって解決したときの情報を整理しました。
