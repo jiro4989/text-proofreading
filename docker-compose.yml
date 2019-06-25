@@ -3,7 +3,7 @@ version: '3'
 services:
   qiita:
     build: ./textlint
-    container_name: textlinter_qiita
+    container_name: textproofreading_qiita
     tty: true
     working_dir: /root
     volumes:
@@ -12,7 +12,7 @@ services:
 
   blog:
     build: ./textlint
-    container_name: textlinter_blog
+    container_name: textproofreading_blog
     tty: true
     working_dir: /root
     volumes:
