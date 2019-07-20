@@ -8,8 +8,7 @@ Nimのコードから各プラットフォーム向けのバイナリを生成�
 
 ## travisコマンドのインストール
 
-GitHub ReleasesにTravisからリリースをアップできるようにするために
-`travis`コマンドのインストールします。
+TravisからGitHub Releasesへリリースするトークン取得のために`travis`コマンドのインストールします。
 
 LinuxMintにデフォルトで入ってるRubyだとtravisのインストールで失敗しました。
 ruby-devが必要だったのでインストールします。
@@ -101,10 +100,12 @@ deploy:
     tags: true
 ```
 
-`before_install`でchoosenimをインストールしていますが、Travisで毎回コンパイラをインストールしていると時間が
-ビルド時間が毎回20分を超えてしまうのでキャッシュするようにしています。
+`before_install`でchoosenimをインストールしています。
+choosenimでのnimのインストールは10分以上かかります。
+Travisで毎回コンパイラをインストールしていると時間がかかるのでキャッシュするようにしています。
 
-`script`では`nimble ci`を実行していますが、これは独自に定義したnimbleのタスクです。
+`script`では`nimble ci`を実行しています。
+これは独自に定義したnimbleのタスクです。
 以下がタスクを定義しているそのnimbleファイルです。
 [nimjson](https://github.com/jiro4989/nimjson)という自作のコマンドのnimbleファイルです。
 
@@ -253,8 +254,7 @@ GitHubのリポジトリを開いてReleasesを表示します。
 「Draft a new release」のボタンをクリックして、諸々テキストを入力して
 タグを追加してみます。
 
-タグを追加するとTravisCIとAppVeyorのタスクが走ることが確認できるので
-それが完了するのを待ちます。
+タグを追加するとTravisCIとAppVeyorのタスクが走り初めますので完了するのを待ちます。
 
 完了したらReleasesに各プラットフォーム向けのバイナリを含んだ圧縮ファイルが配置されます。
 
